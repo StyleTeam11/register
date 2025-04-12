@@ -1,0 +1,95 @@
+/* Body Background */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #8B0000, #000);
+  min-height: 100vh;
+}
+
+/* Container Styling */
+.delete-container {
+  background-color: #000;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+  color: white;
+  margin-top: 100px;
+  transition: transform 0.3s ease;
+}
+.delete-container:hover {
+  transform: scale(1.02);
+}
+
+/* Title */
+.delete-title {
+  color: red;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Inputs */
+.delete-input input {
+  background-color: #111;
+  color: white;
+  border: 1px solid red;
+}
+.delete-input input:focus {
+  border: 2px solid red;
+}
+
+.delete-input-label {
+  color: red !important;
+}
+
+/* Alert Box */
+.delete-alert {
+  background-color: #ffcccc !important;
+  color: red !important;
+  font-weight: bold;
+  border: 1px solid red;
+}
+
+/* Buttons */
+.delete-button,
+.delete-dialog-confirm {
+  background-color: red !important;
+  color: white !important;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.delete-button:hover,
+.delete-dialog-confirm:hover {
+  background-color: #b30000 !important;
+  transform: scale(1.05);
+}
+
+/* Back & Cancel Buttons */
+.delete-dialog-button {
+  color: red !important;
+  border: 1px solid red !important;
+  background-color: transparent !important;
+  transition: all 0.3s ease;
+}
+.delete-dialog-button:hover {
+  background-color: red !important;
+  color: white !important;
+}
+
+/* Dialog Styling */
+.delete-dialog {
+  background-color: #000 !important;
+  color: white;
+  border: 1px solid red;
+}
+.delete-dialog-title {
+  color: red !important;
+  font-weight: bold;
+}
+.delete-dialog-text {
+  color: white;
+}
+.delete-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
