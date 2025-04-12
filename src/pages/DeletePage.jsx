@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Box, TextField, Button, Typography, Container,
-  Paper, Alert, Dialog, DialogActions, DialogContent,
-  DialogContentText, DialogTitle
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@mui/material';
-import "../delete.css";
 
 const DeletePage = () => {
   const [username, setUsername] = useState('');
@@ -61,7 +67,6 @@ const DeletePage = () => {
         localStorage.removeItem('user');
         speak("Account deleted successfully");
         navigate('/login');
-        window.speechSynthesis.cancel();
       }
     } catch (err) {
       speak("Account deletion failed");
@@ -72,87 +77,83 @@ const DeletePage = () => {
     }
   };
 
+  const handleBack = () => {
+    window.speechSynthesis.cancel();
+    navigate(-1);
+  };
+
   return (
-    <Container maxWidth="sm" className="delete-container" sx={{ mt: 8 }}>
-      
-        <Typography variant="h4" component="h1" className="delete-title" gutterBottom align="center">
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <form onSubmit={handleSubmit}>
+        <Typography variant="h4" component="h1" gutterBottom align="center">
           Delete Account
         </Typography>
 
-        {error && <Alert severity="error" className="delete-alert" sx={{ mb: 3 }}>{error}</Alert>}
+        {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-        
-          <TextField
-            className="delete-input"
-            InputLabelProps={{ className: "delete-input-label" }}
-            fullWidth
-            margin="normal"
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <TextField
-            className="delete-input"
-            InputLabelProps={{ className: "delete-input-label" }}
-            fullWidth
-            margin="normal"
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Button
-            className="delete-button"
-            fullWidth
-            variant="contained"
-            type="submit"
-            disabled={loading || !username || !password}
-            sx={{ mt: 3, mb: 2, py: 1.5 }}
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <Button
+          fullWidth
+          variant="contained"
+          type="submit"
+          disabled={loading || !username || !password}
+          sx={{ mt: 3, mb: 2, py: 1.5 }}
+        >
+          {loading ? 'Verifying...' : 'Delete Account'}
+        </Button>
+        <Button
+          fullWidth
+          variant="outlined"
+          onClick={handleBack}
+          sx={{ mt: 1, mb: 2 }}
+        >
+          Back
+        </Button>
+      </form>
+
+      <Dialog 
+        open={openDialog} 
+        onClose={() => setOpenDialog(false)}
+      >
+        <DialogTitle>Confirm Account Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to permanently delete your account? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button 
+            onClick={() => setOpenDialog(false)} 
+            disabled={loading}
           >
-            {loading ? 'Verifying...' : 'Delete Account'}
+            Cancel
           </Button>
           <Button 
-              
-              className="delete-dialog-confirm"
-              variant="contained"
-              disabled={loading}
-            >
-              Back
-            </Button>
-
-        <Dialog 
-          open={openDialog} 
-          onClose={() => setOpenDialog(false)}
-          PaperProps={{ className: "delete-dialog" }}
-        >
-          <DialogTitle className="delete-dialog-title">Confirm Account Deletion</DialogTitle>
-          
-            <DialogContentText className="delete-dialog-text">
-              Are you sure you want to permanently delete your account? This action cannot be undone.
-            </DialogContentText>
-        
-          <DialogActions className="delete-dialog-actions">
-            <Button 
-              onClick={() => setOpenDialog(false)} 
-              className="delete-dialog-button"
-              disabled={loading}
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleDelete} 
-              className="delete-dialog-confirm"
-              variant="contained"
-              disabled={loading}
-            >
-              {loading ? 'Deleting...' : 'Confirm Delete'}
-            </Button>
-
-          </DialogActions>
-        </Dialog>
-      
+            onClick={handleDelete} 
+            color="error"
+            variant="contained"
+            disabled={loading}
+          >
+            {loading ? 'Deleting...' : 'Confirm Delete'}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
