@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
   Box, TextField, Button, Typography, Container,
   Paper, Alert, CircularProgress
@@ -15,6 +16,7 @@ const UserUpdate = () => {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [userFetched, setUserFetched] = useState(false);
+  const navigate = useNavigate();
 
   const speak = (text) => {
     if ("speechSynthesis" in window) {
@@ -46,7 +48,7 @@ const UserUpdate = () => {
       }
     } catch (err) {
       speak("You are not found!");
-      setError(err.response?.data?.error || 'fail to fetch your details');
+      setError(err.response?.data?.error || 'Failed to fetch your details');
     } finally {
       setLoading(false);
     }
@@ -73,16 +75,21 @@ const UserUpdate = () => {
         throw new Error('Failed to update your account');
       }
     } catch (err) {
-      speak("fail to updating your details");
-      setError(err.response?.data?.error || 'fail to updating your details');
+      speak("Failed to update your details");
+      setError(err.response?.data?.error || 'Failed to update your details');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleBack = () => {
+    window.speechSynthesis.cancel();
+    navigate(-1);
+  };
+
   return (
     <Container maxWidth="sm" className="update-container" sx={{ mt: 8 }}>
-      
+
         <Typography variant="h4" component="h1" className="update-title" gutterBottom align="center">
           Update Account
         </Typography>
@@ -98,80 +105,80 @@ const UserUpdate = () => {
           </Alert>
         )}
 
-          {!userFetched ? (
-            <Box component="form" className="update-form" onSubmit={(e) => { e.preventDefault(); fetchUserDetails(); }}>
-              <TextField
-                className="update-input"
-                InputLabelProps={{ className: "update-input-label" }}
-                fullWidth
-                margin="normal"
-                label="Enter Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-              <Button
-                className="update-button"
-                fullWidth
-                variant="contained"
-                disabled={loading || !username}
-                sx={{ mt: 3, mb: 2, py: 1.5 }}
-                type="submit"
-              >
-                {loading ? <CircularProgress size={24} className="update-spinner" /> : 'Fetch Account Details'}
-              </Button>
-               <Button    
-                            className="delete-dialog-confirm"
-                            variant="contained"
-                            disabled={loading}
-                          >
-                            Back
-                          </Button>
-            </Box>
-          ) : (
-            <Box component="form" className="update-form" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
-              <TextField
-                className="update-input"
-                InputLabelProps={{ className: "update-input-label" }}
-                fullWidth
-                margin="normal"
-                label="Country"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-              <TextField
-                className="update-input"
-                InputLabelProps={{ className: "update-input-label" }}
-                fullWidth
-                margin="normal"
-                label="Phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <TextField
-                className="update-input"
-                InputLabelProps={{ className: "update-input-label" }}
-                fullWidth
-                margin="normal"
-                label="New Password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button
-                className="update-button"
-                fullWidth
-                variant="contained"
-                disabled={loading}
-                sx={{ mt: 3, mb: 2, py: 1.5 }}
-                type="submit"
-              >
-                {loading ? <CircularProgress size={24} className="update-spinner" /> : 'Update Details'}
-              </Button>
-            </Box>
-          )}
-       
-     
+        {!userFetched ? (
+          <Box component="form" className="update-form" onSubmit={(e) => { e.preventDefault(); fetchUserDetails(); }}>
+            <TextField
+              className="update-input"
+              InputLabelProps={{ className: "update-input-label" }}
+              fullWidth
+              margin="normal"
+              label="Enter Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <Button
+              className="update-button"
+              fullWidth
+              variant="contained"
+              disabled={loading || !username}
+              sx={{ mt: 3, mb: 2, py: 1.5 }}
+              type="submit"
+            >
+              {loading ? <CircularProgress size={24} className="update-spinner" /> : 'Fetch Account Details'}
+            </Button>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={handleBack}
+              sx={{ mt: 1, mb: 2 }}
+            >
+              Back
+            </Button>
+          </Box>
+        ) : (
+          <Box component="form" className="update-form" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
+            <TextField
+              className="update-input"
+              InputLabelProps={{ className: "update-input-label" }}
+              fullWidth
+              margin="normal"
+              label="Country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+            />
+            <TextField
+              className="update-input"
+              InputLabelProps={{ className: "update-input-label" }}
+              fullWidth
+              margin="normal"
+              label="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <TextField
+              className="update-input"
+              InputLabelProps={{ className: "update-input-label" }}
+              fullWidth
+              margin="normal"
+              label="New Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              className="update-button"
+              fullWidth
+              variant="contained"
+              disabled={loading}
+              sx={{ mt: 3, mb: 2, py: 1.5 }}
+              type="submit"
+            >
+              {loading ? <CircularProgress size={24} className="update-spinner" /> : 'Update Details'}
+            </Button>
+          </Box>
+        )}
+      
     </Container>
   );
 };

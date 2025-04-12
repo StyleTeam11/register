@@ -5,6 +5,8 @@ import LoginPage from './pages/LoginPage.jsx';
 import DeletePage from './pages/DeletePage.jsx';
 import UserUpdate from './pages/UserUpdate.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import SettingAccount from './pages/SettingAccount.jsx';
+
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
         <Route path="/update" element={<UserUpdate />} />
         <Route path="/delete" element={<DeletePage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/account" element={<SettingAccount/>} />
       </Routes>
     </Router>
   );

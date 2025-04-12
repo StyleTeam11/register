@@ -11,8 +11,6 @@ import {
   Box
 } from '@mui/material';
 
-
-
 const ForgotPassword = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -61,17 +59,22 @@ const ForgotPassword = () => {
     }
   };
 
+  const handleBack = () => {
+    window.speechSynthesis.cancel();
+    navigate(-1); // Go back to previous page
+  };
+
   return (
-    <Container maxWidth="sm">
-      <Paper elevation={3}>
+    <Container maxWidth="sm" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom align="center">
           Forgot Password
         </Typography>
 
-        {error && <Alert severity="error">{error}</Alert>}
-        {message && <Alert severity="success">{message}</Alert>}
+        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        {message && <Alert severity="success" sx={{ mb: 2 }}>{message}</Alert>}
 
-        <Box component="form" onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <TextField
             fullWidth
             margin="normal"
@@ -87,23 +90,36 @@ const ForgotPassword = () => {
             variant="contained"
             type="submit"
             disabled={loading || !username.trim()}
+            sx={{ mt: 2, mb: 1 }}
           >
             {loading ? 'Retrieving...' : 'Retrieve Password'}
+          </Button>
+          
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={handleBack}
+            sx={{ mt: 1, mb: 2 }}
+          >
+            Back
           </Button>
         </Box>
 
         {password && (
-          <Box>
+          <Box sx={{ mt: 3, p: 2, border: '1px solid #ccc', borderRadius: 1 }}>
             <Typography variant="h6" gutterBottom>
               Your Password:
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" sx={{ fontFamily: 'monospace', mb: 2 }}>
               {password}
             </Typography>
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => navigate('/login')}
+              onClick={() => {
+                window.speechSynthesis.cancel();
+                navigate('/login');
+              }}
             >
               Go to Login
             </Button>
