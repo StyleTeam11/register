@@ -17,6 +17,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [hasSpokenPassword, setHasSpokenPassword] = useState(false);
   const navigate = useNavigate();
 
   const speak = (text) => {
@@ -32,12 +33,21 @@ const ForgotPassword = () => {
     speak("Please enter your username to get your password.");
   }, []);
 
+  // Speak password when it's retrieved
+  useEffect(() => {
+    if (password && !hasSpokenPassword) {
+      speak(`Your password is ${password}`);
+      setHasSpokenPassword(true);
+    }
+  }, [password, hasSpokenPassword]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setMessage('');
     setPassword('');
+    setHasSpokenPassword(false);
     
     try {
       const response = await axios.post('http://localhost:5000/api/forgot-password', { username });
@@ -61,7 +71,13 @@ const ForgotPassword = () => {
 
   const handleBack = () => {
     window.speechSynthesis.cancel();
-    navigate(-1); // Go back to previous page
+    navigate(-1);
+  };
+
+  const handleSpeakPassword = () => {
+    if (password) {
+      speak(`Your password is ${password}`);
+    }
   };
 
   return (
@@ -113,6 +129,14 @@ const ForgotPassword = () => {
             <Typography variant="body1" sx={{ fontFamily: 'monospace', mb: 2 }}>
               {password}
             </Typography>
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={handleSpeakPassword}
+              sx={{ mb: 2 }}
+            >
+              Speak Password Again
+            </Button>
             <Button
               fullWidth
               variant="outlined"
